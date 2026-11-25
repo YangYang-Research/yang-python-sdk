@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 import httpx
+from dotenv import load_dotenv
 
 from .errors import YogApiError, YogTripwireTriggered
 from .types import ApplyResult, ApplySource, ContentBlock, OutputScope
@@ -28,15 +29,20 @@ class YogClient:
         self,
         api_key: str | None = None,
         *,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: str | None = None,
         timeout: float = 30.0,
         client: httpx.Client | None = None,
+        env_file: str | None | bool = None,
     ) -> None:
+        # env_file=False skips .env; None loads default .env from cwd; str = path
+        if env_file is not False:
+            load_dotenv(dotenv_path=None if env_file is None else str(env_file))
         key = (api_key or os.environ.get("YANG_API_KEY") or "").strip()
         if not key:
-            raise ValueError("api_key or YANG_API_KEY is required")
+            raise ValueError("YANG_API_KEY is required (set it in .env or pass api_key)")
         self._api_key = key
-        self._base_url = base_url.rstrip("/")
+        resolved_base = (base_url or os.environ.get("YANG_BASE_URL") or DEFAULT_BASE_URL).strip()
+        self._base_url = resolved_base.rstrip("/")
         self._owns_client = client is None
         self._client = client or httpx.Client(timeout=timeout)
 

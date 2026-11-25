@@ -1,6 +1,6 @@
 # Yang Open Guardrails — Python SDK
 
-Thin client for [Yang Open Guardrails](https://ai.yyng.icu). Use it from an **existing agent app** to check text before the agent runs (`source=INPUT`) and before you show a reply (`source=OUTPUT`).
+SDK for **Yang Open Guardrails**: check prompts and model replies against a safety profile (content, privacy, brand rules) so your agent or app can allow, block, or redact text before users see it.
 
 ## Install
 
@@ -8,57 +8,85 @@ Thin client for [Yang Open Guardrails](https://ai.yyng.icu). Use it from an **ex
 pip install yang-open-guardrails
 ```
 
-Dev / local:
+## Setup
+
+1. Create an API key in Yang Studio (`sk-yyng…`)
+2. Create an Open Guardrails profile and copy its profile id and version id
+3. Put the API key in a `.env` file in your project:
 
 ```bash
-pip install -e ".[dev]"
+YANG_API_KEY=sk-yyng…
 ```
 
-## Auth
+## How to use
 
-- API key: `YANG_API_KEY` or `YogClient(api_key="sk-yyng…")`
-- Entitlement: `yang_open_guardrails`
-- Profile: Studio-published `profileId` + `versionId` (8-char)
+Call `apply` twice around your agent:
 
-## Quickstart
+1. **`source="INPUT"`** — check the user message **before** you call the agent  
+2. Run your agent / LLM as usual  
+3. **`source="OUTPUT"`** — check the agent reply **before** you show it  
+
+If `action` is `NONE`, continue.  
+If `action` is `GUARDRAIL_INTERVENED`, use `outputs[0]["text"]` from the response.
 
 ```python
-from yang_open_guardrails import YogClient, YogTripwireTriggered
+from yang_open_guardrails import YogClient
 
-client = YogClient(api_key="sk-yyng…")  # default base_url https://ai.yyng.icu
+client = YogClient()
+profile_id = "YOG-AbCdEfGhIjKl"
+version_id = "a1B2c3D4"
 
-try:
-    # Before your agent / LLM
-    client.apply(
-        profile_id="YOG-AbCdEfGhIjKl",
-        version_id="a1B2c3D4",
-        source="INPUT",
-        content=[{"text": {"text": user_message}}],
-        raise_on_tripwire=True,
-    )
-except YogTripwireTriggered as e:
-    show(e.result["outputs"][0]["text"])
+# --- Before agent ---
+inbound = client.apply(
+    profile_id=profile_id,
+    version_id=version_id,
+    source="INPUT",
+    content=[{"text": {"text": user_message}}],
+)
+
+if inbound["action"] == "GUARDRAIL_INTERVENED":
+    # Do not call the agent. Show this text to the user instead.
+    show(inbound["outputs"][0]["text"])
     return
 
-reply = run_your_agent(user_message)  # your code
+# --- Your agent ---
+reply = run_your_agent(user_message)
 
-# Before showing the reply
-out = client.apply(
-    profile_id="YOG-AbCdEfGhIjKl",
-    version_id="a1B2c3D4",
+# --- Before show reply ---
+outbound = client.apply(
+    profile_id=profile_id,
+    version_id=version_id,
     source="OUTPUT",
     content=[{"text": {"text": reply}}],
 )
-if out["action"] == "GUARDRAIL_INTERVENED":
-    reply = out["outputs"][0]["text"]
+
+if outbound["action"] == "GUARDRAIL_INTERVENED":
+    # Agent already ran. Replace the reply with the safe text, then show it.
+    reply = outbound["outputs"][0]["text"]
+
 show(reply)
 ```
 
-Optional body fields: `output_scope` (`INTERVENTIONS` | `FULL`), `grounding_source`, `query`.
+### SDK parameters
 
-`raise_on_tripwire=True` raises only on hard blocks (`actionReason` starts with `Guardrail blocked`). Anonymize returns `ApplyResult` for you to use `outputs`.
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `profile_id` | yes | Open Guardrails profile id from Studio |
+| `version_id` | yes | Profile version id from Studio |
+| `source` | yes | `INPUT` = check before agent. `OUTPUT` = check before show reply |
+| `content` | yes | Text to check: `[{"text": {"text": "..."}}]` |
+| `output_scope` | no | `INTERVENTIONS` (default) or `FULL` — how much detail in `assessments` |
 
-## Example
+### What you get back
+
+| Field | Description |
+|-------|-------------|
+| `action` | `NONE` = OK, continue. `GUARDRAIL_INTERVENED` = use `outputs[0]["text"]` |
+| `outputs` | Text to use when the profile intervened |
+| `actionReason` | Short reason when intervened |
+| `assessments` | Extra detail (`output_scope` controls how much) |
+
+## Quickcheck
 
 ```bash
 export YANG_API_KEY=sk-yyng…
@@ -67,21 +95,6 @@ export YOG_VERSION_ID=a1B2c3D4
 python examples/hello_world.py "Hello"
 ```
 
-## Branching
-
-- `develop` — day-to-day work / PRs
-- `main` — release line (merge from `develop` when shipping)
-
-## Publish (maintainers)
-
-Auto-publish via GitHub Actions when a **`v*` tag** is pushed or a **GitHub Release** is published — and only if that commit is already on `main`.
-
-Secret (org): `PYPI_UPLOAD_PACKAGE` — grant this repo access under Org → Settings → Secrets. Package: `yang-open-guardrails`.
-
-1. Bump `version` on `develop` (`pyproject.toml` + `__init__.__version__`)
-2. Merge `develop` → `main`
-3. On `main`: tag `v0.1.0` and/or create GitHub Release → workflow uploads to PyPI
-
 ## License
 
-MIT
+Apache License 2.0

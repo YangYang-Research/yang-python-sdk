@@ -127,5 +127,5 @@ def test_bad_version_id():
 
 def test_missing_api_key(monkeypatch):
     monkeypatch.delenv("YANG_API_KEY", raising=False)
-    with pytest.raises(ValueError, match="api_key"):
-        YogClient()
+    with pytest.raises(ValueError, match="YANG_API_KEY"):
+        YogClient(env_file=False)

@@ -9,16 +9,15 @@ from yang_open_guardrails import YogApiError, YogClient, YogTripwireTriggered
 
 
 def main() -> int:
-    api_key = os.environ.get("YANG_API_KEY", "").strip()
     profile_id = os.environ.get("YOG_PROFILE_ID", "").strip()
     version_id = os.environ.get("YOG_VERSION_ID", "").strip()
-    if not api_key or not profile_id or not version_id:
-        print("Set YANG_API_KEY, YOG_PROFILE_ID, YOG_VERSION_ID", file=sys.stderr)
+    if not profile_id or not version_id:
+        print("Set YOG_PROFILE_ID and YOG_VERSION_ID (YANG_API_KEY in .env)", file=sys.stderr)
         return 1
 
     user_message = " ".join(sys.argv[1:]) or "Hello"
 
-    with YogClient(api_key=api_key) as client:
+    with YogClient() as client:
         try:
             inbound = client.apply(
                 profile_id=profile_id,

@@ -5,16 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "yang-open-guardrails"
 version = "0.1.0"
-description = "Yang Open Guardrails Python SDK — apply INPUT/OUTPUT checks via YAIG"
+description = "Check prompts and model replies against Yang Open Guardrails safety profiles"
 readme = "README.md"
-license = "MIT"
+license = "Apache-2.0"
 requires-python = ">=3.11"
 authors = [{ name = "YangYang Research" }]
 keywords = ["yangyang", "guardrails", "yog", "llm-safety"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -23,6 +23,7 @@ classifiers = [
 ]
 dependencies = [
   "httpx>=0.27",
+  "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
