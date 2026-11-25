@@ -1,6 +1,6 @@
 # Yang Python SDK
 
-Build YangYang into your agents and apps. One Python package, typed clients per tool, shared API key — start with Open Guardrails and pick up more tools as they ship.
+Official Python SDK for YangYang. Typed clients for Studio products — one package, shared credentials, import the tool you need.
 
 ## Install
 

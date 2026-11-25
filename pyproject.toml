@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "yang-python-sdk"
 version = "0.1.0"
-description = "YangYang Python SDK — typed clients for Studio tools (Open Guardrails and more)"
+description = "Official YangYang Python SDK — typed clients for Studio products"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
