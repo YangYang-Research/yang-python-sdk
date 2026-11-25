@@ -5,7 +5,7 @@ Check prompts and model replies against a safety profile (content, privacy, bran
 ## Install
 
 ```bash
-pip install yang-open-guardrails
+pip install yang-python-sdk
 ```
 
 ## Setup
@@ -30,7 +30,7 @@ If `action` is `NONE`, continue.
 If `action` is `GUARDRAIL_INTERVENED`, use `outputs[0]["text"]` from the response.
 
 ```python
-from yang_open_guardrails import YogClient
+from yang_python_sdk.open_guardrails import YogClient
 
 client = YogClient()
 profile_id = "YOG-AbCdEfGhIjKl"
@@ -92,5 +92,5 @@ show(reply)
 export YANG_API_KEY=sk-yyng…
 export YOG_PROFILE_ID=YOG-…
 export YOG_VERSION_ID=a1B2c3D4
-python examples/hello_world.py "Hello"
+python examples/open_guardrails_hello_world.py "Hello"
 ```

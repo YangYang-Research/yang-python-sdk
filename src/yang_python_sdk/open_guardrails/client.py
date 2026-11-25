@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-import os
 import re
 from typing import Any
 
 import httpx
-from dotenv import load_dotenv
+
+from yang_python_sdk._config import resolve_credentials
 
 from .errors import YogApiError, YogTripwireTriggered
 from .types import ApplyResult, ApplySource, ContentBlock, OutputScope
 
-DEFAULT_BASE_URL = "https://ai.yyng.icu"
 VERSION_ID_RE = re.compile(r"^[A-Za-z0-9]{8}$")
 
 
@@ -23,7 +22,7 @@ def _is_blocked(result: ApplyResult) -> bool:
 
 
 class YogClient:
-    """Thin client for YAIG `POST /yog/{profileId}/version/{versionId}/apply`."""
+    """Client for Open Guardrails apply API."""
 
     def __init__(
         self,
@@ -34,15 +33,13 @@ class YogClient:
         client: httpx.Client | None = None,
         env_file: str | None | bool = None,
     ) -> None:
-        # env_file=False skips .env; None loads default .env from cwd; str = path
-        if env_file is not False:
-            load_dotenv(dotenv_path=None if env_file is None else str(env_file))
-        key = (api_key or os.environ.get("YANG_API_KEY") or "").strip()
-        if not key:
-            raise ValueError("YANG_API_KEY is required (set it in .env or pass api_key)")
+        key, resolved_base = resolve_credentials(
+            api_key=api_key,
+            base_url=base_url,
+            env_file=env_file,
+        )
         self._api_key = key
-        resolved_base = (base_url or os.environ.get("YANG_BASE_URL") or DEFAULT_BASE_URL).strip()
-        self._base_url = resolved_base.rstrip("/")
+        self._base_url = resolved_base
         self._owns_client = client is None
         self._client = client or httpx.Client(timeout=timeout)
 

@@ -4,7 +4,7 @@ import httpx
 import pytest
 import respx
 
-from yang_open_guardrails import YogApiError, YogClient, YogTripwireTriggered
+from yang_python_sdk.open_guardrails import YogApiError, YogClient, YogTripwireTriggered
 
 BASE = "https://ai.yyng.icu"
 PROFILE = "YOG-AbCdEfGhIjKl"

@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import sys
 
-from yang_open_guardrails import YogApiError, YogClient, YogTripwireTriggered
+from yang_python_sdk.open_guardrails import YogApiError, YogClient, YogTripwireTriggered
 
 
 def main() -> int:

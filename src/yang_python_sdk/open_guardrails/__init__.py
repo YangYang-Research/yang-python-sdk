@@ -1,4 +1,4 @@
-"""Yang Open Guardrails Python SDK."""
+"""Yang Open Guardrails client."""
 
 from .client import YogClient
 from .errors import YogApiError, YogTripwireTriggered
@@ -13,5 +13,3 @@ __all__ = [
     "YogClient",
     "YogTripwireTriggered",
 ]
-
-__version__ = "0.1.0"

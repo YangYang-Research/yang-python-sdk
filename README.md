@@ -5,14 +5,16 @@ Official Python SDK for YangYang products. Use it from your apps and agents to c
 ## Install
 
 ```bash
-pip install yang-open-guardrails
+pip install yang-python-sdk
 ```
 
 ## Tools
 
-| Tool | What it does | Docs |
-|------|----------------|------|
-| **Open Guardrails** | Check prompts and model replies against a safety profile | [docs/open-guardrails.md](docs/open-guardrails.md) |
+| Tool | Import | Docs |
+|------|--------|------|
+| **Open Guardrails** | `from yang_python_sdk.open_guardrails import YogClient` | [docs/open-guardrails.md](docs/open-guardrails.md) |
+
+New tools land as sibling packages under `yang_python_sdk/<tool>/` — shared key/base URL stay in one place.
 
 ## Setup
 

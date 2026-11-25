@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "yang-open-guardrails"
+name = "yang-python-sdk"
 version = "0.1.0"
 description = "Official YangYang Python SDK"
 readme = "README.md"
@@ -35,7 +35,7 @@ Repository = "https://github.com/YangYang-Research/yang-python-sdk"
 Documentation = "https://github.com/YangYang-Research/yang-python-sdk/tree/develop/docs"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/yang_open_guardrails"]
+packages = ["src/yang_python_sdk"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
