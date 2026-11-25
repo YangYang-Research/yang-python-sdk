@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "yang-open-guardrails"
 version = "0.1.0"
-description = "Check prompts and model replies against Yang Open Guardrails safety profiles"
+description = "Official YangYang Python SDK"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
@@ -30,8 +30,9 @@ dependencies = [
 dev = ["pytest>=8", "respx>=0.21"]
 
 [project.urls]
-Homepage = "https://github.com/YangYang-Research/yang-open-guardrails-python-sdk"
-Repository = "https://github.com/YangYang-Research/yang-open-guardrails-python-sdk"
+Homepage = "https://github.com/YangYang-Research/yang-python-sdk"
+Repository = "https://github.com/YangYang-Research/yang-python-sdk"
+Documentation = "https://github.com/YangYang-Research/yang-python-sdk/tree/develop/docs"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/yang_open_guardrails"]
