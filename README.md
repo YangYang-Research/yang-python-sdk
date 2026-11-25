@@ -73,7 +73,7 @@ python examples/hello_world.py "Hello"
 
 Auto-publish via GitHub Actions (`.github/workflows/publish.yml`) when a **GitHub Release** is published, or via **Actions → Publish PyPI → Run workflow**.
 
-Secret: `PYPI_UPLOAD_PACKAGE` (PyPI API token). Package: `yang-open-guardrails`.
+Secret (org): `PYPI_UPLOAD_PACKAGE` (PyPI API token) — grant this repo access under Org → Settings → Secrets. Package: `yang-open-guardrails`.
 
 1. Bump `version` in `pyproject.toml` and `__init__.__version__`
 2. Commit + push `main`
