@@ -69,14 +69,15 @@ export YOG_VERSION_ID=a1B2c3D4
 python examples/hello_world.py "Hello"
 ```
 
-## Publish checklist (maintainers)
+## Publish (maintainers)
 
-Do **not** upload until asked.
+Auto-publish via GitHub Actions (`.github/workflows/publish.yml`) when a **GitHub Release** is published, or via **Actions → Publish PyPI → Run workflow**.
 
-1. Bump `version` in `pyproject.toml` / `__init__.__version__`
-2. `python -m build`
-3. `twine check dist/*`
-4. `twine upload dist/*` (PyPI package name: `yang-open-guardrails`)
+Secret: `PYPI_UPLOAD_PACKAGE` (PyPI API token). Package: `yang-open-guardrails`.
+
+1. Bump `version` in `pyproject.toml` and `__init__.__version__`
+2. Commit + push `main`
+3. Create a GitHub Release (tag e.g. `v0.1.0`) → workflow uploads to PyPI
 
 ## License
 
