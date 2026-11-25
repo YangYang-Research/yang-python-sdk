@@ -1,6 +1,6 @@
 # Yang Python SDK
 
-Official Python SDK for YangYang products. Use it from your apps and agents to call Yang APIs with a small, typed client.
+Build YangYang into your agents and apps. One Python package, typed clients per tool, shared API key — start with Open Guardrails and pick up more tools as they ship.
 
 ## Install
 
@@ -13,8 +13,6 @@ pip install yang-python-sdk
 | Tool | Import | Docs |
 |------|--------|------|
 | **Open Guardrails** | `from yang_python_sdk.open_guardrails import YogClient` | [docs/open-guardrails.md](docs/open-guardrails.md) |
-
-New tools land as sibling packages under `yang_python_sdk/<tool>/` — shared key/base URL stay in one place.
 
 ## Setup
 
