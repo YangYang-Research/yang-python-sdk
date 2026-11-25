@@ -69,15 +69,20 @@ export YOG_VERSION_ID=a1B2c3D4
 python examples/hello_world.py "Hello"
 ```
 
+## Branching
+
+- `develop` — day-to-day work / PRs
+- `main` — release line (merge from `develop` when shipping)
+
 ## Publish (maintainers)
 
-Auto-publish via GitHub Actions (`.github/workflows/publish.yml`) when a **GitHub Release** is published, or via **Actions → Publish PyPI → Run workflow**.
+Auto-publish via GitHub Actions when a **`v*` tag** is pushed or a **GitHub Release** is published — and only if that commit is already on `main`.
 
-Secret (org): `PYPI_UPLOAD_PACKAGE` (PyPI API token) — grant this repo access under Org → Settings → Secrets. Package: `yang-open-guardrails`.
+Secret (org): `PYPI_UPLOAD_PACKAGE` — grant this repo access under Org → Settings → Secrets. Package: `yang-open-guardrails`.
 
-1. Bump `version` in `pyproject.toml` and `__init__.__version__`
-2. Commit + push `main`
-3. Create a GitHub Release (tag e.g. `v0.1.0`) → workflow uploads to PyPI
+1. Bump `version` on `develop` (`pyproject.toml` + `__init__.__version__`)
+2. Merge `develop` → `main`
+3. On `main`: tag `v0.1.0` and/or create GitHub Release → workflow uploads to PyPI
 
 ## License
 
